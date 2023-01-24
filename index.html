@@ -1,68 +1,70 @@
 <!DOCTYPE html>
 <html data-theme="dark">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Portfolio | Daunte Williamson</title>
     <link rel="icon" href="img/titleIcon.ico" />
     <link rel="stylesheet" href="css/css/pico.min.css" />
+    <script type="text/javascript" src="js/gameLogic.js"></script>
     <style>
-      html {
-        overflow-y: scroll;
-      }
-      img {
-        image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
-        image-rendering: -moz-crisp-edges;          /* Firefox                        */
-        image-rendering: -o-crisp-edges;            /* Opera                          */
-        image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
-        image-rendering: pixelated;                 /* Universal support since 2021   */
-        image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
-        -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
-      }
-
-      /* Red Light scheme (Default) */
-      /* Can be forced with data-theme="light" */
-      [data-theme="light"],
-      :root:not([data-theme="dark"]) {
-        --primary: #e53935;
-        --primary-hover: #d32f2f;
-        --primary-focus: rgba(229, 57, 53, 0.125);
-        --primary-inverse: #FFF;
-        --background-color: rgb(10, 12, 27);
-      }
-
-      /* Red Dark scheme (Auto) */
-      /* Automatically enabled if user has Dark mode enabled */
-      @media only screen and (prefers-color-scheme: dark) {
-        :root:not([data-theme="light"]) {
-          --primary: #e53935;
-          --primary-hover: #f44336;
-          --primary-focus: rgba(229, 57, 53, 0.25);
-          --primary-inverse: #FFF;
-          --background-color: rgb(10, 12, 27);
+        html {
+            overflow-y: scroll;
         }
-      }
 
-      /* Red Dark scheme (Forced) */
-      /* Enabled if forced with data-theme="dark" */
-      [data-theme="dark"] {
-        --primary: #e53935;
-        --primary-hover: #f44336;
-        --primary-focus: rgba(229, 57, 53, 0.25);
-        --primary-inverse: #FFF;
-        --background-color: rgb(10, 12, 27);
-      }
+        img {
+            image-rendering: optimizeSpeed; /* STOP SMOOTHING, GIVE ME SPEED  */
+            image-rendering: -moz-crisp-edges; /* Firefox                        */
+            image-rendering: -o-crisp-edges; /* Opera                          */
+            image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+            image-rendering: pixelated; /* Universal support since 2021   */
+            image-rendering: optimize-contrast; /* CSS3 Proposed                  */
+            -ms-interpolation-mode: nearest-neighbor; /* IE8+                           */
+        }
 
-      /* Red (Common styles) */
-      :root {
-        --form-element-active-border-color: var(--primary);
-        --form-element-focus-color: var(--primary-focus);
-        --switch-color: var(--primary-inverse);
-        --switch-checked-background-color: var(--primary);
-      }
+        /* Red Light scheme (Default) */
+        /* Can be forced with data-theme="light" */
+        [data-theme="light"],
+        :root:not([data-theme="dark"]) {
+            --primary: #e53935;
+            --primary-hover: #d32f2f;
+            --primary-focus: rgba(229, 57, 53, 0.125);
+            --primary-inverse: #FFF;
+            --background-color: rgb(10, 12, 27);
+        }
+
+        /* Red Dark scheme (Auto) */
+        /* Automatically enabled if user has Dark mode enabled */
+        @media only screen and (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --primary: #e53935;
+                --primary-hover: #f44336;
+                --primary-focus: rgba(229, 57, 53, 0.25);
+                --primary-inverse: #FFF;
+                --background-color: rgb(10, 12, 27);
+            }
+        }
+
+        /* Red Dark scheme (Forced) */
+        /* Enabled if forced with data-theme="dark" */
+        [data-theme="dark"] {
+            --primary: #e53935;
+            --primary-hover: #f44336;
+            --primary-focus: rgba(229, 57, 53, 0.25);
+            --primary-inverse: #FFF;
+            --background-color: rgb(10, 12, 27);
+        }
+
+        /* Red (Common styles) */
+        :root {
+            --form-element-active-border-color: var(--primary);
+            --form-element-focus-color: var(--primary-focus);
+            --switch-color: var(--primary-inverse);
+            --switch-checked-background-color: var(--primary);
+        }
     </style>
-  </head>
-  <body>
+</head>
+  <body onload="init()">
     <main class="container">
       <div style="text-align: center;">
         <img src="img/profilePic.jpg" width="25%" style="border-radius: 50%;">
@@ -187,12 +189,52 @@
           <details>
             <summary style="text-align: center;"><img src="img/blackjackLogo.png" width="500px"></summary>
             <div>
-              <p>
-                Simple html/js blackjack game developed in a couple hours spread out over 2 days. 
-                I wanted to use strictly core JS and html to allow for flexibility when experimenting with different front end libraries in the future.
-              </p>
+                <p>
+                    Simple html/js blackjack game developed in a couple hours spread out over 2 days.
+                    I wanted to use strictly core JS and html to allow for flexibility when experimenting with different front end libraries in the future.
+                </p>
+                <div style="">
+                    <div id="Bet">
+                        <label for="PlayerInput">Bet &#36;</label>
+                        <input type="number" id="PlayerInput" min="5" step="5" value="20" />
+                        <button id="PlayButton" onclick="storePlayerData()">Play</button>
+                        <button id="ResetButton" onclick="reset()" hidden>Take out a loan (Reset)</button>
+                    </div>
+                    <div class="stats" style="">
+                        <p id="p01">Player Cash: </p>
+                        <p id="message"></p>
+                        <div class="grid">
+                            <div>
+                              <p id="pHand"></p>
+                              <p id="pValue"></p>
+                            </div>
+                            <div>
+                              <p id="sHand"></p>
+                              <p id="sValue"></p>
+                            </div>
+                            <div>
+                              <p id="dHand"></p>
+                              <p id="dValue"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div id="Actions">
+                        <button id="st" onclick="endRound()">Stand</button>
+                        <button id="hit" onclick="hit()">Hit</button>
+                        <button id="sh" onclick="splitHit()" hidden>Hit: Split Hand</button>
+                        <button id="sp" onclick="split()">Split</button>
+                        <button id="dd" onclick="doubleDown()">Double Down</button>
+                        <button id="sur" onclick="surrender()">Surrender</button>
+                        <button id="cheatFace" onclick="cheatFace()">Cheat: Face Cards ($2500)</button>
+                    </div>
+                    <div>
+                        <p id="cheatMessage"></p>
+                    </div>
+                </div>
+                <br />
+                <a href="https://github.com/Dauntekw/BlackJackProject" target="_blank" role="button" style="display: block;">View on GitHub</a>
             </div>
-            <a href="https://github.com/Dauntekw/BlackJackProject" target="_blank" role="button" style="display: block;">View on GitHub</a>
           </details>
         </div>
       </div>
